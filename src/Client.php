@@ -11,16 +11,12 @@
 namespace EcomPHP\TiktokShop;
 
 use EcomPHP\TiktokShop\Errors\ResponseException;
+use EcomPHP\TiktokShop\Errors\TiktokShopException;
 use EcomPHP\TiktokShop\Resources\AffiliateCreator;
 use EcomPHP\TiktokShop\Resources\AffiliatePartner;
 use EcomPHP\TiktokShop\Resources\AffiliateSeller;
+use EcomPHP\TiktokShop\Resources\Authorization;
 use EcomPHP\TiktokShop\Resources\CustomerService;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Client as GuzzleHttpClient;
-use GuzzleHttp\Middleware;
-use GuzzleHttp\RequestOptions;
-use EcomPHP\TiktokShop\Errors\TiktokShopException;
 use EcomPHP\TiktokShop\Resources\Event;
 use EcomPHP\TiktokShop\Resources\Finance;
 use EcomPHP\TiktokShop\Resources\Fulfillment;
@@ -31,8 +27,13 @@ use EcomPHP\TiktokShop\Resources\Product;
 use EcomPHP\TiktokShop\Resources\Promotion;
 use EcomPHP\TiktokShop\Resources\ReturnRefund;
 use EcomPHP\TiktokShop\Resources\Seller;
-use EcomPHP\TiktokShop\Resources\Authorization;
+use EcomPHP\TiktokShop\Resources\Shop;
 use EcomPHP\TiktokShop\Resources\Supplychain;
+use GuzzleHttp\Client as GuzzleHttpClient;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -52,10 +53,11 @@ use Psr\Http\Message\RequestInterface;
  * @property-read AffiliateSeller $AffiliateSeller
  * @property-read AffiliateCreator $AffiliateCreator
  * @property-read AffiliatePartner $AffiliatePartner
+ * @property-read Shop $Shop
  */
 class Client
 {
-    public CONST DEFAULT_VERSION = '202309';
+    public const DEFAULT_VERSION = '202309';
     protected $app_key;
     protected $app_secret;
     protected $access_token;
@@ -91,6 +93,7 @@ class Client
         AffiliateSeller::class,
         AffiliateCreator::class,
         AffiliatePartner::class,
+        Shop::class,
     ];
 
     public function __construct($app_key, $app_secret, $options = [])
@@ -234,7 +237,7 @@ class Client
 
         // 4. If the request header content_type is not multipart/form-data, append body to the end
         if ($request->getMethod() !== 'GET' && strpos($request->getHeaderLine('content-type'), 'multipart/form-data') === false) {
-            $stringToBeSigned .= (string) $request->getBody();
+            $stringToBeSigned .= (string)$request->getBody();
         }
 
         // 5. Wrap string generated in step 3 with app_secret.
@@ -248,20 +251,20 @@ class Client
      * Magic call resource
      *
      * @param $resourceName
-     * @throws TiktokShopException
      * @return mixed
+     * @throws TiktokShopException
      */
     public function __get($resourceName)
     {
-        $resourceClassName = __NAMESPACE__."\\Resources\\".$resourceName;
+        $resourceClassName = __NAMESPACE__ . "\\Resources\\" . $resourceName;
         if (!in_array($resourceClassName, self::resources)) {
-            throw new TiktokShopException("Invalid resource ".$resourceName);
+            throw new TiktokShopException("Invalid resource " . $resourceName);
         }
 
         //Initiate the resource object
         $resource = new $resourceClassName();
         if (!$resource instanceof Resource) {
-            throw new TiktokShopException("Invalid resource class ".$resourceClassName);
+            throw new TiktokShopException("Invalid resource class " . $resourceClassName);
         }
 
         $resource->useVersion($this->version);
@@ -278,7 +281,7 @@ class Client
             throw new ResponseException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $json = json_decode((string) $response->getBody(), true);
+        $json = json_decode((string)$response->getBody(), true);
 
         if ($json === null) {
             throw new ResponseException('Unable to parse response string as JSON');
