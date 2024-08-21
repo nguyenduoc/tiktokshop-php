@@ -65,7 +65,7 @@ abstract class Resource
     }
 
     /**
-     * @throws \EcomPHP\TiktokShop\Errors\TiktokShopException
+     * @throws TiktokShopException
      */
     public function call($method, $action, $params = [])
     {

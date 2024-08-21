@@ -10,6 +10,7 @@
 
 namespace EcomPHP\TiktokShop\Resources;
 
+use EcomPHP\TiktokShop\Errors\TiktokShopException;
 use GuzzleHttp\RequestOptions;
 use EcomPHP\TiktokShop\Resource;
 
@@ -17,6 +18,9 @@ class ReturnRefund extends Resource
 {
     protected $category = 'return_refund';
 
+    /**
+     * @throws TiktokShopException
+     */
     public function searchCancellations($query = [], $body = null)
     {
         if ($body === null) {
@@ -28,6 +32,9 @@ class ReturnRefund extends Resource
         ]);
     }
 
+    /**
+     * @throws TiktokShopException
+     */
     public function approveCancellation($cancel_id)
     {
         return $this->call('POST', 'cancellations/'.$cancel_id.'/approve', [
@@ -37,6 +44,9 @@ class ReturnRefund extends Resource
         ]);
     }
 
+    /**
+     * @throws TiktokShopException
+     */
     public function rejectCancellation($cancel_id, $params)
     {
         return $this->call('POST', 'cancellations/'.$cancel_id.'/reject', [
