@@ -19,15 +19,10 @@ class Shop extends Resource
 
     protected $category = 'shop';
 
-    public function getShopList($query = [], $body = null)
+    public function getShopList($params)
     {
-        if ($body === null) {
-            static::extractParams($query, $query, $body);
-        }
-
         return $this->call('GET', 'shop/get_authorized_shop', [
-            RequestOptions::QUERY => $query,
-            is_array($body) ? RequestOptions::JSON : RequestOptions::FORM_PARAMS => $body,
+            RequestOptions::QUERY => $params,
         ]);
     }
 }
