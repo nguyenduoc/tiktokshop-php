@@ -11,6 +11,7 @@
 namespace EcomPHP\TiktokShop\Resources;
 
 use EcomPHP\TiktokShop\Resource;
+use GuzzleHttp\RequestOptions;
 
 class Logistic extends Resource
 {
@@ -34,14 +35,5 @@ class Logistic extends Resource
     public function getGlobalSellerWarehouse()
     {
         return $this->call('GET', 'global_warehouses');
-    }
-
-
-    public function updateShippingInfo($order_id, $tracking_number, $shipping_provider_id)
-    {
-        return $this->call('POST', "/fulfillment/$this->version/orders/$order_id/shipping_info/update", [
-            'tracking_number' => $tracking_number,
-            'shipping_provider_id' => $shipping_provider_id
-        ]);
     }
 }
