@@ -18,12 +18,12 @@ class Logistic extends Resource
 
     public function getWarehouseDeliveryOptions($warehouse_id)
     {
-        return $this->call('GET', 'warehouses/'.$warehouse_id.'/delivery_options');
+        return $this->call('GET', 'warehouses/' . $warehouse_id . '/delivery_options');
     }
 
     public function getShippingProvider($delivery_option_id)
     {
-        return $this->call('GET','delivery_options/'.$delivery_option_id.'/shipping_providers');
+        return $this->call('GET', 'delivery_options/' . $delivery_option_id . '/shipping_providers');
     }
 
     public function getWarehouseList()
@@ -39,7 +39,7 @@ class Logistic extends Resource
 
     public function updateShippingInfo($order_id, $tracking_number, $shipping_provider_id)
     {
-        return $this->call('POST', "/fulfillment/202309/orders/{$order_id}/shipping_info/update", [
+        return $this->call('POST', "/fulfillment/$this->version/orders/$order_id/shipping_info/update", [
             'tracking_number' => $tracking_number,
             'shipping_provider_id' => $shipping_provider_id
         ]);
