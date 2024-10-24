@@ -35,4 +35,13 @@ class Logistic extends Resource
     {
         return $this->call('GET', 'global_warehouses');
     }
+
+
+    public function updateShippingInfo($order_id, $tracking_number, $shipping_provider_id)
+    {
+        return $this->call('POST', "/fulfillment/202309/orders/{$order_id}/shipping_info/update", [
+            'tracking_number' => $tracking_number,
+            'shipping_provider_id' => $shipping_provider_id
+        ]);
+    }
 }
