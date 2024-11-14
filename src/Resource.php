@@ -11,12 +11,12 @@
 namespace EcomPHP\TiktokShop;
 
 use DateTimeInterface;
-use EcomPHP\TiktokShop\Errors\TiktokShopException;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use EcomPHP\TiktokShop\Client as TiktokShopClient;
 use EcomPHP\TiktokShop\Errors\ResponseException;
+use EcomPHP\TiktokShop\Errors\TiktokShopException;
 use EcomPHP\TiktokShop\Errors\TokenException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 abstract class Resource
 {
@@ -42,7 +42,7 @@ abstract class Resource
         }
 
         if (intval($version) < $minimum_version) {
-            throw new TiktokShopException('API version '.$this->minimum_version.' is the minimum requirement to access this resource');
+            throw new TiktokShopException('API version ' . $this->minimum_version . ' is the minimum requirement to access this resource');
         }
 
         $this->version = $version;
@@ -53,7 +53,7 @@ abstract class Resource
     public function checkMinimumVersion($version)
     {
         if ($this->version < intval($version)) {
-            throw new TiktokShopException('API version '.$version.' is the minimum requirement to access this resource');
+            throw new TiktokShopException('API version ' . $version . ' is the minimum requirement to access this resource');
         }
     }
 
@@ -69,17 +69,17 @@ abstract class Resource
      */
     public function call($method, $action, $params = [])
     {
-        $uri = trim($this->category.'/'.$this->version.'/'.$action, '/');
+        $uri = trim($this->category . '/' . $this->version . '/' . $action, '/');
         try {
             $response = $this->httpClient->request($method, $uri, $params);
         } catch (GuzzleException $e) {
             throw new ResponseException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $json = json_decode((string) $response->getBody(), true);
+        $json = json_decode((string)$response->getBody(), true);
 
         if ($json === null) {
-            throw new ResponseException('Unable to parse response string as JSON');
+            throw new ResponseException('Unable to parse response string as JSON: ' . $response->getBody());
         }
 
         $this->last_message = $json['message'] ?? null;
