@@ -79,7 +79,7 @@ abstract class Resource
         $json = json_decode((string)$response->getBody(), true);
 
         if ($json === null) {
-            throw new ResponseException('Unable to parse response string as JSON: ' . $response->getBody());
+            throw new ResponseException('Unable to parse response string as JSON: "' . $response->getBody() . '"');
         }
 
         $this->last_message = $json['message'] ?? null;
