@@ -12,10 +12,6 @@
       "EcomPHP\\TiktokShop\\": "src"
     }
   },
-  "autoload-dev": {
-    "psr-4": {
-    }
-  },
   "extra": {
     "branch-alias": {
       "php7.1": "php7.1"
