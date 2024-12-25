@@ -14,7 +14,7 @@
   },
   "extra": {
     "branch-alias": {
-      "php7.1": "php7.1"
+      "php7.1": "7.1.x-dev"
     }
   }
 }
