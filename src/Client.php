@@ -203,6 +203,9 @@ class Client
             RequestOptions::HTTP_ERRORS => false, // disable throw exception on http 4xx, manual handle it
             'handler' => $stack,
             'base_uri' => 'https://open-api.tiktokglobalshop.com/',
+            'proxy'    => [
+                'http'  => 'http://KDgkVmAH:DBdK9ixi@166.1.252.85:63578',
+            ]
         ], $this->options ?? []);
 
         return new GuzzleHttpClient($options);
