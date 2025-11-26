@@ -69,7 +69,7 @@ class Finance extends Resource
     public function getUnsettledTransactions($params = [])
     {
         $params = array_merge([
-            'sort_field' => 'create_time', // required
+            'sort_field' => 'order_create_time', // required
         ], $params);
 
         return $this->useVersion("202507")->call('GET', 'orders/unsettled', [
