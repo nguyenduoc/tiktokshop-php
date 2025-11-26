@@ -65,4 +65,15 @@ class Finance extends Resource
             RequestOptions::QUERY => $params,
         ]);
     }
+
+    public function getUnsettledTransactions($params = [])
+    {
+        $params = array_merge([
+            'sort_field' => 'create_time', // required
+        ], $params);
+
+        return $this->useVersion("202507")->call('GET', 'orders/unsettled', [
+            RequestOptions::QUERY => $params,
+        ]);
+    }
 }
