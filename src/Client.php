@@ -204,8 +204,8 @@ class Client
             'handler' => $stack,
             'base_uri' => 'https://open-api.tiktokglobalshop.com/',
             'proxy'    => [
-                'http'  => 'http://xidp8739:NJRpgr2409@173.0.60.87:57837',
-                'https' => 'http://xidp8739:NJRpgr2409@173.0.60.87:57837',
+                'http'  => 'http://fqrk8405:YoL78zWs8E@173.0.60.87:47095',
+                'https' => 'http://fqrk8405:YoL78zWs8E@173.0.60.87:47095',
             ]
         ], $this->options ?? []);
 
